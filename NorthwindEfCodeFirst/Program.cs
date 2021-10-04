@@ -10,10 +10,24 @@ namespace NorthwindEfCodeFirst
     {
         static void Main(string[] args)
         {
-            
+       
 
             Console.ReadLine();
 
+        }
+
+        private static void OrderBy()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                List<Customer> result = (from c in northwindContext.Customers
+                                         orderby c.Country.Length descending, c.ContactName ascending // Order by ile istediğin şekilde sıralarsın descending tersten sıralar , ascending düzden sıralar
+                                         select c).ToList();
+                foreach (var customer in result)
+                {
+                    Console.WriteLine("{0},{1}", customer.Country, customer.ContactName);
+                }
+            }
         }
 
         private static void GroupBy1()
@@ -101,7 +115,7 @@ namespace NorthwindEfCodeFirst
             }
         }
 
-        private static void Add()
+        private static void Add1()
         {
             using (var northwindContext = new NorthwindContext())
             {
