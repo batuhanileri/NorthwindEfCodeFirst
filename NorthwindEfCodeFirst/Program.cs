@@ -10,19 +10,48 @@ namespace NorthwindEfCodeFirst
     {
         static void Main(string[] args)
         {
-            // One();
-            // Two();
-            // Three();
-            // Four(); 
-            // Five();
-            // Six();
-            // Seven();
+            
 
             Console.ReadLine();
 
         }
 
-        private static void Seven()
+        private static void GroupBy1()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                var result = from c in northwindContext.Customers
+                             group c by new { c.Country, c.City }
+                             into g
+                             select new
+                             {
+                                 sehir = g.Key.City,
+                                 ulke = g.Key.Country,
+                                 adet = g.Count()
+                             };
+                foreach (var group in result)
+                {
+                    Console.WriteLine("Ulke : {0} , Şehir : {1} , Adet : {2}", group.ulke, group.sehir, group.adet);
+                }
+            }
+        }
+
+        private static void GroupBy()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                var result = from c in northwindContext.Customers
+                             group c by c.Country
+                             into g
+                             select g;
+                foreach (var group in result)
+                {
+                    Console.WriteLine(group.Key);//anahtar değerine göre değeri listelicek
+                }
+            }
+        }
+
+        private static void Projection3()
         {
             using (var northwindContext = new NorthwindContext())
             {
@@ -36,7 +65,7 @@ namespace NorthwindEfCodeFirst
             }
         }
 
-        private static void Six()
+        private static void Projection2()
         {
             using (var northwindContext = new NorthwindContext())
             {
@@ -49,7 +78,7 @@ namespace NorthwindEfCodeFirst
             }
         }
 
-        private static void Five()
+        private static void Projection()
         {
             using (var northwindContext = new NorthwindContext())
             {
@@ -62,7 +91,7 @@ namespace NorthwindEfCodeFirst
             }
         }
 
-        private static void Four()
+        private static void Delete()
         {
             using (var northwindContext = new NorthwindContext())
             {
@@ -72,7 +101,7 @@ namespace NorthwindEfCodeFirst
             }
         }
 
-        private static void Three()
+        private static void Add()
         {
             using (var northwindContext = new NorthwindContext())
             {
@@ -88,7 +117,7 @@ namespace NorthwindEfCodeFirst
             }
         }
 
-        private static void Two()
+        private static void Add()
         {
             using (var northwindContext = new NorthwindContext())
             {
@@ -105,7 +134,7 @@ namespace NorthwindEfCodeFirst
             }
         }
 
-        private static void One()
+        private static void Start()
         {
             using (var northwindContext = new NorthwindContext())
             {
