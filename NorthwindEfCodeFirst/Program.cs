@@ -1,6 +1,8 @@
 ﻿using NorthwindEfCodeFirst.Contexts;
 using NorthwindEfCodeFirst.Entitites;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NorthwindEfCodeFirst
 {
@@ -11,9 +13,53 @@ namespace NorthwindEfCodeFirst
             // One();
             // Two();
             // Three();
-            // Four();
+            // Four(); 
+            // Five();
+            // Six();
+            // Seven();
+
             Console.ReadLine();
 
+        }
+
+        private static void Seven()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                List<Customer> result = (from c in northwindContext.Customers
+                                         where c.City == "London"
+                                         select c).ToList();
+                foreach (var customer in result)
+                {
+                    Console.WriteLine("Contact Name : {0} , City:{1}", customer.ContactName, customer.City);
+                }
+            }
+        }
+
+        private static void Six()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                var result = from c in northwindContext.Customers
+                             select new { c.ContactName, c.CompanyName };
+                foreach (var customer in result)
+                {
+                    Console.WriteLine(customer);
+                }
+            }
+        }
+
+        private static void Five()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                List<Customer> result = (from c in northwindContext.Customers
+                                         select c).ToList();
+                foreach (var customer in result)
+                {
+                    Console.WriteLine(customer.ContactName);
+                }
+            }
         }
 
         private static void Four()
