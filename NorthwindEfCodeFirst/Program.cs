@@ -10,10 +10,57 @@ namespace NorthwindEfCodeFirst
     {
         static void Main(string[] args)
         {
-       
+           
 
             Console.ReadLine();
 
+        }
+
+        private static void LeftJoin()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                var result = from c in northwindContext.Customers
+                             join o in northwindContext.Orders
+                             on c.CustomerID equals o.CustomerID into temp // joini tempe ata
+                             from co in temp.DefaultIfEmpty() // temp boş mu kontrol et
+                             where temp.Count() == 0 // boş ise müşterinin siparişi yok demektir 0 a eşit olur
+                             orderby c.CustomerID // customerid ye göre sıralamada ekleyebiliriz
+                             select new
+                             {
+                                 c.CustomerID,
+                                 c.ContactName,
+
+                             };
+                foreach (var item in result)
+                {
+                    Console.WriteLine("{0},{1}", item.CustomerID, item.ContactName);//anahtar değerine göre değeri listelicek
+                }
+                Console.WriteLine("{0} adet kayıt vardır.", result.Count());
+            }
+        }
+
+        private static void Join()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                var result = from c in northwindContext.Customers
+                             join o in northwindContext.Orders  // order tablosuyla customer tablosunu customerid sayesinde birleştirdi eşit(equals) olanlar select ile listelecenek
+                             on c.CustomerID equals o.CustomerID
+                             orderby c.CustomerID // customerid ye göre sıralamada ekleyebiliriz
+                             select new
+                             {
+                                 c.CustomerID,
+                                 c.ContactName,
+                                 o.OrderDate,
+                                 o.ShipCity
+                             };
+                foreach (var item in result)
+                {
+                    Console.WriteLine("{0},{1},{2},{3}", item.CustomerID, item.ContactName, item.OrderDate, item.ShipCity);//anahtar değerine göre değeri listelicek
+                }
+                Console.WriteLine("{0} adet sipariş vardır.", result.Count());
+            }
         }
 
         private static void OrderBy()
