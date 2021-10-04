@@ -2,6 +2,7 @@
 using NorthwindEfCodeFirst.Entitites;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace NorthwindEfCodeFirst
@@ -10,10 +11,38 @@ namespace NorthwindEfCodeFirst
     {
         static void Main(string[] args)
         {
-           
+            
 
             Console.ReadLine();
 
+        }
+
+        private static void SingleLineQueries1()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                var result = northwindContext.Customers.Where(c => c.CustomerID == "ALFKI").Include("Orders");
+
+                foreach (var item in result)
+                {
+                    Console.WriteLine("{0},{1}", item.ContactName, item.Orders.Count);
+                }
+            }
+        }
+
+        private static void SingleLineQueries()
+        {
+            using (var northwindContext = new NorthwindContext())
+            {
+                var result = northwindContext.Customers.
+                    Where(c => c.City == "London" || c.Country == "UK").
+                    OrderBy(c => c.ContactName).
+                    Select(cus => new { cus.CustomerID, cus.ContactName });
+                foreach (var item in result)
+                {
+                    Console.WriteLine("{0},{1}", item.CustomerID, item.ContactName);
+                }
+            }
         }
 
         private static void LeftJoin()
